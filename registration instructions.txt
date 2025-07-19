@@ -1,0 +1,22 @@
+1. Single Image Registration
+Command: python student_registration.py single S12345 "John Doe" path/to/image.jpg
+Description: Registers a student with a single image.
+
+2. Multiple Images Registration
+Command: python student_registration.py multi S12345 "John Doe" image1.jpg image2.jpg image3.jpg
+Description: Registers a student with multiple images.
+
+3. Webcam Registration
+Command: python student_registration.py webcam S12345 "John Doe" --num_images 5
+Description: Registers a student by capturing images from webcam.
+
+4. List Registered Students
+Command: python student_registration.py list
+
+5. delete student details
+Command: python student_registration.py delete S12345
+Description: Deletes a student and all their face embeddings.
+
+6. High-Quality Registration (Best for accuracy):
+python register_with_quality_check.py
+This script performs additional quality checks during registration to ensure better face recognition.

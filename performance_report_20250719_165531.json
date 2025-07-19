@@ -1,0 +1,60 @@
+{
+  "face_recognition": {
+    "average_processing_time": 0.820846160252889,
+    "detection_success_rate": 0.8888888888888888,
+    "average_recognition_accuracy": 0.8417797638204783,
+    "total_images_tested": 9,
+    "processing_times": [
+      0.619154691696167,
+      1.5670583248138428,
+      0.545684814453125,
+      0.7152721881866455,
+      0.5912125110626221,
+      0.6892948150634766,
+      0.8945441246032715,
+      1.242088794708252,
+      0.5233051776885986
+    ]
+  },
+  "liveness_detection": {
+    "average_processing_time": 19.03796754943,
+    "average_liveness_score": 1.0,
+    "liveness_detection_rate": 1.0,
+    "processing_times": [
+      21.005621671676636,
+      20.52686619758606,
+      17.08454394340515,
+      19.241562128067017,
+      19.561003923416138,
+      15.899444580078125,
+      19.416715145111084,
+      20.324615478515625,
+      18.28133487701416
+    ],
+    "liveness_scores": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "database_operations": {
+    "avg_student_lookup_time": 0.0003899192810058594,
+    "max_student_lookup_time": 0.001087188720703125,
+    "min_student_lookup_time": 0.0,
+    "avg_embedding_retrieval_time": 0.00042084217071533206,
+    "max_embedding_retrieval_time": 0.0010828971862792969,
+    "min_embedding_retrieval_time": 0.0,
+    "avg_authentication_logging_time": 0.005625796318054199,
+    "max_authentication_logging_time": 0.009203672409057617,
+    "min_authentication_logging_time": 0.003981351852416992
+  },
+  "overall_system": {
+    "note": "psutil not available for detailed system analysis"
+  }
+}
