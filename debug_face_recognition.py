@@ -1,93 +1,133 @@
 import cv2
-import numpy as np
-import os
 import time
-from database_manager import DatabaseManager
 from face_recognition_module import FaceRecognizer
+from database_manager import DatabaseManager
 
-def debug_face_recognition():
-    """Debug tool to visualize face recognition process"""
-    db_manager = DatabaseManager()
-    face_recognizer = FaceRecognizer()
+def debug_recognition():
+    """
+    A dedicated script to debug the face recognition process.
+    This will help diagnose why an unregistered user might be getting a match.
+    """
+    print("--- Face Recognition Debugger ---")
     
-    # Get all registered embeddings
+    # 1. Initialize components
+    try:
+        db_manager = DatabaseManager()
+        # Explicitly initialize with the correct model to ensure 128-dim embeddings
+        face_recognizer = FaceRecognizer(model_name="Facenet")
+        print("Components initialized successfully.")
+    except Exception as e:
+        print(f"Error initializing components: {e}")
+        return
+
+    # 2. Load registered embeddings
+    print("\nLoading registered student embeddings...")
     registered_embeddings = db_manager.get_all_embeddings()
-    print(f"Found {len(registered_embeddings)} registered embeddings")
-    
-    # Initialize camera
-    cap = cv2.VideoCapture(0)
-    if not cap.isOpened():
-        print("Error: Could not open camera.")
+    if not registered_embeddings:
+        print("No registered students found in the database. Please register a student first.")
         return
     
-    print("Press 'q' to quit, 's' to save debug image")
+    print(f"Loaded {len(registered_embeddings)} embeddings for the following students:")
     
+    # Create a set to store unique student names and IDs
+    unique_students = set()
+    for student_id, name, _ in registered_embeddings:
+        unique_students.add((student_id, name))
+        
+    # Print the unique student names and IDs
+    for student_id, name in sorted(list(unique_students)):
+        print(f"  - {name} (ID: {student_id})")
+
+    # 3. Capture image from webcam
+    print("\nPreparing to capture image from webcam...")
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print("Error: Could not open webcam.")
+        return
+
+    print("Webcam opened. Press 'c' to capture an image for testing.")
+    print("Please ensure an UNREGISTERED person is in front of the camera.")
+    
+    capture_frame = None
     while True:
         ret, frame = cap.read()
         if not ret:
             print("Error: Failed to capture frame.")
             break
         
-        # Make a copy for display
         display_frame = frame.copy()
+        cv2.putText(display_frame, "Press 'c' to capture, 'q' to quit", 
+                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
         
-        # Extract face embedding
-        embedding = face_recognizer.get_face_embedding(frame)
-        
-        if embedding is not None:
-            # Compare with all registered embeddings
-            results = []
-            for student_id, name, reg_embedding in registered_embeddings:
-                if embedding.shape == reg_embedding.shape:
-                    # Calculate raw similarity
-                    raw_similarity = np.dot(embedding, reg_embedding) / (np.linalg.norm(embedding) * np.linalg.norm(reg_embedding))
-                    # Normalize to 0-1
-                    normalized_similarity = (raw_similarity + 1) / 2
-                    results.append((student_id, name, raw_similarity, normalized_similarity))
-            
-            # Sort by normalized similarity
-            results.sort(key=lambda x: x[3], reverse=True)
-            
-            # Display results
-            cv2.putText(display_frame, "Face Recognition Debug", 
-                       (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-            
-            y_pos = 60
-            for i, (student_id, name, raw_sim, norm_sim) in enumerate(results[:5]):  # Show top 5
-                color = (0, 255, 0) if norm_sim >= face_recognizer.threshold else (0, 0, 255)
-                cv2.putText(display_frame, f"{i+1}. {name} (ID: {student_id})", 
-                           (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
-                y_pos += 25
-                cv2.putText(display_frame, f"   Raw: {raw_sim:.4f}, Norm: {norm_sim:.4f}", 
-                           (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
-                y_pos += 30
-            
-            # Show threshold
-            cv2.putText(display_frame, f"Threshold: {face_recognizer.threshold:.4f}", 
-                       (10, y_pos), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 0), 2)
-        else:
-            cv2.putText(display_frame, "No face detected", 
-                       (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-        
-        cv2.imshow("Face Recognition Debug", display_frame)
+        cv2.imshow("Debug Capture", display_frame)
         
         key = cv2.waitKey(1) & 0xFF
         if key == ord('q'):
+            cap.release()
+            cv2.destroyAllWindows()
+            print("Debug session cancelled.")
+            return
+        elif key == ord('c'):
+            capture_frame = frame
+            print("Image captured.")
             break
-        elif key == ord('s'):
-            # Save debug image
-            debug_dir = "debug_images"
-            os.makedirs(debug_dir, exist_ok=True)
-            debug_path = os.path.join(debug_dir, f"debug_{int(time.time())}.jpg")
-            cv2.imwrite(debug_path, display_frame)
-            print(f"Saved debug image to {debug_path}")
-    
+            
     cap.release()
     cv2.destroyAllWindows()
+
+    if capture_frame is None:
+        print("No image was captured. Aborting.")
+        return
+
+    # 4. Run recognition and get detailed results
+    print("\n--- Running Recognition ---")
     
-    # Force close any remaining windows
-    for i in range(5):
-        cv2.waitKey(1)
+    # We need to get inside the recognize_face function's logic
+    # to see all scores. Let's replicate parts of it here for debugging.
+    
+    print("Step 1: Extracting embedding from the captured image...")
+    live_embedding = face_recognizer.get_face_embedding(capture_frame)
+    
+    if live_embedding is None:
+        print("Could not extract a face embedding from the captured image. Aborting.")
+        return
+        
+    print("Live embedding extracted successfully.")
+    
+    print("\nStep 2: Comparing live embedding against all registered embeddings...")
+    
+    all_scores = []
+    for student_id, name, reg_embedding in registered_embeddings:
+        if live_embedding.shape != reg_embedding.shape:
+            print(f"  - Skipping {name} (ID: {student_id}) due to shape mismatch.")
+            continue
+            
+        similarity = face_recognizer.compare_embeddings(live_embedding, reg_embedding)
+        all_scores.append({'student_id': student_id, 'name': name, 'score': similarity})
+        print(f"  - Comparison with {name} (ID: {student_id}): Score = {similarity:.4f}")
+
+    # 5. Analyze the results
+    print("\n--- Analysis ---")
+    if not all_scores:
+        print("No comparisons could be made.")
+        return
+        
+    best_match_info = max(all_scores, key=lambda x: x['score'])
+    best_score = best_match_info['score']
+    best_match_name = best_match_info['name']
+    best_match_id = best_match_info['student_id']
+    
+    threshold = face_recognizer.threshold
+    
+    print(f"Highest score found: {best_score:.4f} for {best_match_name} (ID: {best_match_id})")
+    print(f"Current recognition threshold: {threshold}")
+    
+    if best_score >= threshold:
+        print("\n[!!!] CRITICAL ISSUE: A match was found above the threshold.")
+        print("This indicates a FALSE POSITIVE. The system incorrectly identified the unregistered person.")
+    else:
+        print("\n[OK] As expected, no match was found above the threshold.")
+        print("The system correctly rejected the unregistered person.")
 
 if __name__ == "__main__":
-    debug_face_recognition()
+    debug_recognition()

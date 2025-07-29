@@ -1,0 +1,55 @@
+{
+    "confusion_matrix": {
+        "tn": 24,
+        "fp": 24,
+        "fn": 3,
+        "tp": 5
+    },
+    "classification_metrics": {
+        "accuracy": 0.5178571428571429,
+        "precision": 0.1724137931034483,
+        "recall_sensitivity_tpr": 0.625,
+        "f1_score": 0.2702702702702703,
+        "specificity_tnr": 0.5
+    },
+    "biometric_error_rates": {
+        "false_acceptance_rate_far": 0.5,
+        "false_rejection_rate_frr": 0.375,
+        "half_total_error_rate_hter": 0.4375,
+        "equal_error_rate_eer": 0.5,
+        "eer_threshold": 0.9077565724388774
+    },
+    "roc_analysis": {
+        "fpr": [
+            0.0,
+            0.0,
+            0.25,
+            0.25,
+            0.375,
+            0.375,
+            1.0,
+            1.0
+        ],
+        "tpr": [
+            0.0,
+            0.125,
+            0.125,
+            0.375,
+            0.375,
+            0.875,
+            0.875,
+            1.0
+        ],
+        "thresholds": [
+            Infinity,
+            0.9678312011676682,
+            0.9491248386783544,
+            0.9081355834597897,
+            0.9077565724388774,
+            0.8863489880475117,
+            0.6884501299472873,
+            0.0
+        ],
+        "auc": 0.625
+    }
+}

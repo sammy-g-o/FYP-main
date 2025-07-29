@@ -1,0 +1,107 @@
+{
+    "confusion_matrix": {
+        "tn": 28,
+        "fp": 0,
+        "fn": 4,
+        "tp": 4
+    },
+    "classification_metrics": {
+        "accuracy": 0.8888888888888888,
+        "precision": 1.0,
+        "recall_sensitivity_tpr": 0.5,
+        "f1_score": 0.6666666666666666,
+        "specificity_tnr": 1.0
+    },
+    "biometric_error_rates": {
+        "false_acceptance_rate_far": 0.0,
+        "false_rejection_rate_frr": 0.5,
+        "half_total_error_rate_hter": 0.25,
+        "equal_error_rate_eer": 0.26785714285714285,
+        "eer_threshold": 0.7155700922012329
+    },
+    "roc_analysis": {
+        "fpr": [
+            0.0,
+            0.0,
+            0.0,
+            0.2857142857142857,
+            0.2857142857142857,
+            0.8571428571428571,
+            0.8571428571428571,
+            1.0,
+            1.0
+        ],
+        "tpr": [
+            0.0,
+            0.125,
+            0.5,
+            0.5,
+            0.75,
+            0.75,
+            0.875,
+            0.875,
+            1.0
+        ],
+        "thresholds": [
+            Infinity,
+            0.9512176513671875,
+            0.8822915554046631,
+            0.794624924659729,
+            0.7155700922012329,
+            0.6449180841445923,
+            0.6398115158081055,
+            0.6363009810447693,
+            0.0
+        ],
+        "auc": 0.6964285714285714
+    },
+    "additional_metrics": {
+        "total_attempts": 36,
+        "genuine_attempts": 8,
+        "impostor_attempts": 28,
+        "correct_predictions": 32,
+        "incorrect_predictions": 4
+    },
+    "detailed_analysis": {
+        "per_student_performance": {
+            "s121202033": {
+                "correct_recognitions": 2,
+                "total_attempts": 3,
+                "accuracy": 0.6666666666666666,
+                "avg_score": 0.8098505934079488,
+                "min_score": 0.6398115158081055,
+                "max_score": 0.9045620560646057
+            },
+            "s121202059": {
+                "correct_recognitions": 1,
+                "total_attempts": 2,
+                "accuracy": 0.5,
+                "avg_score": 0.47560882568359375,
+                "min_score": 0.0,
+                "max_score": 0.9512176513671875
+            },
+            "s122202058": {
+                "correct_recognitions": 1,
+                "total_attempts": 3,
+                "accuracy": 0.3333333333333333,
+                "avg_score": 0.7782036264737447,
+                "min_score": 0.7155700922012329,
+                "max_score": 0.8822915554046631
+            }
+        },
+        "error_analysis": {},
+        "score_statistics": {
+            "overall_mean": 0.7128429777092404,
+            "overall_std": 0.15292553803445272,
+            "genuine_mean": 0.7144225388765335,
+            "impostor_mean": 0.7123916745185852
+        }
+    },
+    "metadata": {
+        "evaluation_timestamp": "2025-07-26T16:50:30.755636",
+        "model_name": "Facenet",
+        "embedding_size": 128,
+        "recognition_threshold": 0.85,
+        "evaluation_version": "2.0"
+    }
+}

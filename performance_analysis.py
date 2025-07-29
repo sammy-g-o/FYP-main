@@ -11,7 +11,7 @@ import sqlite3
 import os
 import json
 from datetime import datetime
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt  # Commented out to avoid dependency issues
 from database_manager import DatabaseManager
 from face_recognition_module import FaceRecognizer
 from liveness_detection import LivenessDetector

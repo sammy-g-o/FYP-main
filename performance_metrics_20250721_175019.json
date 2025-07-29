@@ -1,0 +1,32 @@
+{
+  "database_performance": {
+    "avg_student_lookup_time": 0.0012577128410339354,
+    "avg_embedding_retrieval_time": 0.0014706659317016602,
+    "avg_log_query_time": 0.0013844060897827148,
+    "max_student_lookup_time": 0.0055675506591796875,
+    "min_student_lookup_time": 0.0,
+    "max_embedding_retrieval_time": 0.00672149658203125,
+    "min_embedding_retrieval_time": 0.0
+  },
+  "authentication_analysis": {
+    "total_students": 2,
+    "total_embeddings": 10,
+    "total_auth_attempts": 207,
+    "success_rate_percent": 1.932367149758454,
+    "successful_attempts": 4,
+    "failed_attempts": 203,
+    "average_confidence_score": 0.973779985065216,
+    "average_liveness_score": 0.792270531400967,
+    "embeddings_per_student": 5.0,
+    "auth_results_breakdown": {
+      "FAILED_LIVENESS": 3,
+      "SUCCESS": 4,
+      "TEST": 200
+    },
+    "student_attempts": {
+      "Giwa Abdulsamad": 4,
+      "TEST_ID": 200,
+      "s121202000": 3
+    }
+  }
+}

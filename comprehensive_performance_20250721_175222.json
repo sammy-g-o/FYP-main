@@ -1,0 +1,143 @@
+{
+  "database_performance": {
+    "avg_student_lookup_time": 0.0012577128410339354,
+    "avg_embedding_retrieval_time": 0.0014706659317016602,
+    "avg_log_query_time": 0.0013844060897827148,
+    "max_student_lookup_time": 0.0055675506591796875,
+    "min_student_lookup_time": 0.0,
+    "max_embedding_retrieval_time": 0.00672149658203125,
+    "min_embedding_retrieval_time": 0.0
+  },
+  "authentication_analysis": {
+    "total_students": 2,
+    "total_embeddings": 10,
+    "total_auth_attempts": 207,
+    "success_rate_percent": 1.932367149758454,
+    "successful_attempts": 4,
+    "failed_attempts": 203,
+    "average_confidence_score": 0.973779985065216,
+    "average_liveness_score": 0.792270531400967,
+    "embeddings_per_student": 5.0,
+    "auth_results_breakdown": {
+      "FAILED_LIVENESS": 3,
+      "SUCCESS": 4,
+      "TEST": 200
+    },
+    "student_attempts": {
+      "Giwa Abdulsamad": 4,
+      "TEST_ID": 200,
+      "s121202000": 3
+    }
+  },
+  "image_processing": {
+    "average_face_detection_time": 0.00473787784576416,
+    "average_image_load_time": 0.004440879821777344,
+    "total_images_tested": 10,
+    "detection_times": [
+      0.04290485382080078,
+      0.0009982585906982422,
+      0.0,
+      0.001004934310913086,
+      0.0,
+      0.0,
+      0.0014541149139404297,
+      0.0,
+      0.0,
+      0.0010166168212890625
+    ],
+    "load_times": [
+      0.030056238174438477,
+      0.002002716064453125,
+      0.00099945068359375,
+      0.0009996891021728516,
+      0.0011796951293945312,
+      0.0020101070404052734,
+      0.0010004043579101562,
+      0.0011403560638427734,
+      0.0030105113983154297,
+      0.0020096302032470703
+    ]
+  },
+  "authentication_patterns": {
+    "total_sessions": 3,
+    "average_attempts_per_session": 69.0,
+    "successful_authentications": 4,
+    "failed_authentications": 3,
+    "session_lengths": [
+      4,
+      3,
+      200
+    ]
+  },
+  "database_scalability": {
+    "limit_1": {
+      "average_time": 0.0010394811630249023,
+      "times": [
+        0.0013849735260009766,
+        0.0,
+        0.0010120868682861328,
+        0.00099945068359375,
+        0.0009980201721191406,
+        0.0010058879852294922,
+        0.0,
+        0.0009942054748535156,
+        0.0030007362365722656,
+        0.00099945068359375
+      ]
+    },
+    "limit_10": {
+      "average_time": 0.0009000539779663086,
+      "times": [
+        0.0010037422180175781,
+        0.0009982585906982422,
+        0.0010039806365966797,
+        0.0,
+        0.001003265380859375,
+        0.0009899139404296875,
+        0.0,
+        0.0010025501251220703,
+        0.0009992122650146484,
+        0.0019996166229248047
+      ]
+    },
+    "limit_50": {
+      "average_time": 0.002035784721374512,
+      "times": [
+        0.0019996166229248047,
+        0.0010001659393310547,
+        0.004999876022338867,
+        0.004334926605224609,
+        0.0010149478912353516,
+        0.0020024776458740234,
+        0.0019991397857666016,
+        0.0009987354278564453,
+        0.0010023117065429688,
+        0.0010056495666503906
+      ]
+    },
+    "limit_100": {
+      "average_time": 0.0016257047653198242,
+      "times": [
+        0.002993345260620117,
+        0.0020012855529785156,
+        0.0009965896606445312,
+        0.002267122268676758,
+        0.0010013580322265625,
+        0.0009963512420654297,
+        0.002005338668823242,
+        0.0009942054748535156,
+        0.0010228157043457031,
+        0.001978635787963867
+      ]
+    }
+  },
+  "system_metrics": {
+    "estimated_face_recognition_time": 0.5,
+    "estimated_liveness_detection_time": 0.3,
+    "face_detection_time": 0.00473787784576416,
+    "database_retrieval_time": 0.0014706659317016602,
+    "total_processing_time": 0.8062085437774658,
+    "estimated_fps": 1.2403738557700348,
+    "real_time_capable": true
+  }
+}

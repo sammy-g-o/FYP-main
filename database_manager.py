@@ -46,7 +46,31 @@ class DatabaseManager:
             exam_session_id TEXT
         )
         ''')
-        
+
+        # Create indexes for performance optimization
+        try:
+            print("Creating database indexes for performance optimization...")
+
+            # Students table indexes
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_students_student_id ON students(student_id)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_students_registration_date ON students(registration_date)')
+
+            # Face embeddings table indexes
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_embeddings_student_id ON face_embeddings(student_id)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_embeddings_added_date ON face_embeddings(added_date)')
+
+            # Authentication logs table indexes
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_auth_logs_student_id ON auth_logs(student_id)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_auth_logs_timestamp ON auth_logs(timestamp DESC)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_auth_logs_session ON auth_logs(exam_session_id)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_auth_logs_result ON auth_logs(auth_result)')
+
+            print("Database indexes created successfully!")
+
+        except sqlite3.OperationalError as e:
+            print(f"Note: Some indexes may already exist or column not found: {e}")
+            # Continue anyway - the database will still work
+
         conn.commit()
         conn.close()
     

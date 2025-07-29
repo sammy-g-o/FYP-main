@@ -11,23 +11,29 @@ import dlib
 import time
 
 class FaceRecognizer:
-    def __init__(self, model_path=None):
+    def __init__(self, model_name="Facenet"):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         print(f"Using device: {self.device}")
         
-        # DeepFace configuration - Use Facenet consistently throughout the project
-        self.model_name = "Facenet"  # This model produces 128-dimensional embeddings
+        # --- Model Configuration ---
+        self.model_name = model_name
         self.detector_backend = "opencv"
         self.distance_metric = "cosine"
-        
-        # Set embedding size based on model
-        self.embedding_size = 128  # Facenet produces 128-dimensional embeddings
-        
-        # Set threshold based on model
-        self.threshold = 0.5  # Adjusted for better matching
-        
-        # Set input shape based on model
-        self.input_shape = (160, 160)  # Facenet uses 160x160 input
+
+        if self.model_name == "Facenet":
+            self.embedding_size = 128
+            self.threshold = 0.85  # Stricter threshold for Facenet
+            self.input_shape = (160, 160)
+        # elif self.model_name == "Facenet512":
+        #     self.embedding_size = 512
+        #     self.threshold = 0.68
+        #     self.input_shape = (160, 160)
+        else:
+            # Default fallback for other models
+            print(f"Warning: Configuration for model '{self.model_name}' is not explicitly set. Using defaults.")
+            self.embedding_size = 128 # Default assumption
+            self.threshold = 0.85
+            self.input_shape = (160, 160)
         
         print(f"Using model: {self.model_name} with embedding size: {self.embedding_size}")
         print(f"Recognition threshold: {self.threshold}")
@@ -127,32 +133,44 @@ class FaceRecognizer:
             if face_img is None:
                 return None
             
-            # Get embedding using DeepFace - updated for newer versions
-            embedding = DeepFace.represent(
+            # Get embedding using DeepFace
+            embedding_list = DeepFace.represent(
                 img_path=face_img,
                 model_name=self.model_name,
-                enforce_detection=False,  # We already detected the face
+                enforce_detection=False,
                 detector_backend=self.detector_backend,
                 align=True
             )
             
-            # Handle different return formats in different DeepFace versions
-            if isinstance(embedding, list) and len(embedding) > 0:
-                if isinstance(embedding[0], dict) and "embedding" in embedding[0]:
-                    # Newer DeepFace versions return a list of dicts
-                    return np.array(embedding[0]["embedding"])
-                else:
-                    # Some versions return a list directly
-                    return np.array(embedding[0])
-            elif isinstance(embedding, dict) and "embedding" in embedding:
-                # Some versions return a dict
-                return np.array(embedding["embedding"])
-            else:
-                # Fall back to original behavior
-                return np.array(embedding)
+            # DeepFace returns a list of dictionaries, one for each face.
+            # Since we've already isolated a face, we expect a list with one item.
+            if not isinstance(embedding_list, list) or len(embedding_list) == 0:
+                print("Error: DeepFace.represent did not return the expected format (list of embeddings).")
+                return None
+                
+            embedding_data = embedding_list[0]
+            if "embedding" not in embedding_data:
+                print("Error: 'embedding' key not found in DeepFace result.")
+                return None
+                
+            embedding = np.array(embedding_data["embedding"], dtype=np.float32)
+
+            # Validate embedding dimension
+            if embedding.shape[0] != self.embedding_size:
+                print(f"FATAL: Embedding dimension mismatch for model '{self.model_name}'!")
+                print(f"Expected {self.embedding_size}, but got {embedding.shape[0]}.")
+                print("This indicates a problem with the DeepFace model loading or configuration.")
+                print("To prevent data corruption, this embedding will not be used.")
+                return None
+
+            return embedding
         
         except Exception as e:
-            print(f"Error in face embedding extraction: {str(e)}")
+            print(f"An exception occurred during face embedding extraction: {str(e)}")
+            # Provide a hint for a common issue
+            if "model not found" in str(e).lower():
+                print("Hint: Ensure the model name is correct and that you have an internet connection for the initial download.")
+                print("You might need to delete the contents of '~/.deepface/models/' to force a re-download.")
             return None
     
     def compare_embeddings(self, embedding1, embedding2):
@@ -202,7 +220,7 @@ class FaceRecognizer:
         if best_score >= self.threshold:
             return best_match, best_score, "Match found"
         else:
-            return None, best_score, "No match found"
+            return None, best_score, f"No match found with sufficient confidence (score: {best_score:.4f})"
     
     def verify_face_direct(self, image1, image2):
         """Direct verification between two face images using DeepFace"""
@@ -220,26 +238,3 @@ class FaceRecognizer:
         except Exception as e:
             print(f"Error in face verification: {str(e)}")
             return False, 0.0, f"Error: {str(e)}"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

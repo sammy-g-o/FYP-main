@@ -8,7 +8,8 @@ from face_recognition_module import FaceRecognizer
 class StudentRegistrationSystem:
     def __init__(self):
         self.db_manager = DatabaseManager()
-        self.face_recognizer = FaceRecognizer()
+        # Explicitly initialize with the correct model to ensure 128-dim embeddings
+        self.face_recognizer = FaceRecognizer(model_name="Facenet")
     
     def register_single_image(self, student_id, name, image_path):
         """Register a student with a single image"""
@@ -29,39 +30,83 @@ class StudentRegistrationSystem:
         """Register a student with multiple face images"""
         if not image_paths:
             return False, "No images provided"
-        
+
+        # Check for existing embeddings with incompatible dimensions
+        existing_embeddings = self.db_manager.get_all_embeddings()
+        if existing_embeddings:
+            # Check the dimension of existing embeddings
+            sample_embedding = existing_embeddings[0][2]  # Get the embedding from first result
+            if sample_embedding.shape[0] != 128:
+                print(f"WARNING: Existing embeddings have {sample_embedding.shape[0]} dimensions, but current model produces 128 dimensions.")
+                print("This will cause compatibility issues. Consider running the database cleanup script.")
+
+                # Ask user if they want to clear existing embeddings
+                response = input("Do you want to clear all existing embeddings and start fresh? (y/N): ")
+                if response.lower() in ['y', 'yes']:
+                    success = self._clear_all_embeddings()
+                    if success:
+                        print("All existing embeddings cleared. Proceeding with registration...")
+                    else:
+                        return False, "Failed to clear existing embeddings"
+                else:
+                    return False, "Registration cancelled due to embedding dimension mismatch"
+
         success_count = 0
         failed_paths = []
-        
+
         for i, image_path in enumerate(image_paths):
             # Load and check image
             img = cv2.imread(image_path)
             if img is None:
                 failed_paths.append(image_path)
                 continue
-            
+
             # Extract face embedding
             embedding = self.face_recognizer.get_face_embedding(img)
             if embedding is None:
                 failed_paths.append(image_path)
                 continue
-            
+
+            # Verify embedding dimension before storing
+            if embedding.shape[0] != 128:
+                print(f"ERROR: Generated embedding has {embedding.shape[0]} dimensions, expected 128")
+                failed_paths.append(image_path)
+                continue
+
             # Register in database with description
             description = f"Image {i+1} - {os.path.basename(image_path)}"
             success, _ = self.db_manager.register_student(student_id, name, embedding, description)
-            
+
             if success:
                 success_count += 1
+                print(f"Successfully registered embedding from {os.path.basename(image_path)} (128 dimensions)")
             else:
                 failed_paths.append(image_path)
-        
+
         if success_count == 0:
             return False, "Failed to register any images"
         elif success_count == len(image_paths):
             return True, f"Successfully registered all {success_count} images for student {name} (ID: {student_id})"
         else:
             return True, f"Registered {success_count}/{len(image_paths)} images for student {name} (ID: {student_id}). Failed paths: {failed_paths}"
-    
+
+    def _clear_all_embeddings(self):
+        """Clear all existing face embeddings from the database"""
+        try:
+            conn = self.db_manager.connect()
+            if conn is None:
+                return False
+
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM face_embeddings")
+            cursor.execute("DELETE FROM students")
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error clearing embeddings: {str(e)}")
+            return False
+
     def register_from_webcam(self, student_id, name, num_images=5):
         """Register a student by capturing images from webcam"""
         # Initialize camera
@@ -289,6 +334,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-

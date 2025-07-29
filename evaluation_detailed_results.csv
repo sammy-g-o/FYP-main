@@ -1,0 +1,37 @@
+attempt_type,image_path,image_name,expected_student_id,predicted_student_id,predicted_name,score,confidence,is_correct,ground_truth,prediction,claimed_student_id,is_accepted
+genuine,test_data\s121202033\kaseem_2.jpg,kaseem_2.jpg,s121202033,s121202033,fasasi Kaseem,0.9045620560646057,Match found,True,1,1,,
+genuine,test_data\s121202033\kaseem_test.jpg,kaseem_test.jpg,s121202033,s121202033,fasasi Kaseem,0.8851782083511353,Match found,True,1,1,,
+genuine,test_data\s121202033\kaseem_test_3.jpg,kaseem_test_3.jpg,s121202033,,,0.6398115158081055,No match found with sufficient confidence (score: 0.6398),False,1,0,,
+genuine,test_data\s121202059\s121202059.jpg,s121202059.jpg,s121202059,s121202059,Giwa Abdulsamad,0.9512176513671875,Match found,True,1,1,,
+genuine,test_data\s121202059\Snapchat-1279691273.jpg,Snapchat-1279691273.jpg,s121202059,,,0.0,No face detected,False,1,0,,
+genuine,test_data\s122202058\sadiku_test.jpg,sadiku_test.jpg,s122202058,,,0.7155700922012329,No match found with sufficient confidence (score: 0.7156),False,1,0,,
+genuine,test_data\s122202058\sadiku_test_2.jpg,sadiku_test_2.jpg,s122202058,s122202058,Sadiku Abdullah,0.8822915554046631,Match found,True,1,1,,
+genuine,test_data\s122202058\sadiku_test_3.jpg,sadiku_test_3.jpg,s122202058,,,0.7367492318153381,No match found with sufficient confidence (score: 0.7367),False,1,0,,
+impostor,test_data\impostors\IMG-20220530-WA0095.jpg,IMG-20220530-WA0095.jpg,,,,0.6449180841445923,No match found with sufficient confidence (score: 0.6449),,0,0,s121202059,False
+impostor,test_data\impostors\IMG-20220530-WA0095.jpg,IMG-20220530-WA0095.jpg,,,,0.6449180841445923,No match found with sufficient confidence (score: 0.6449),,0,0,s121202033,False
+impostor,test_data\impostors\IMG-20220530-WA0095.jpg,IMG-20220530-WA0095.jpg,,,,0.6449180841445923,No match found with sufficient confidence (score: 0.6449),,0,0,s122202058,False
+impostor,test_data\impostors\IMG-20220530-WA0095.jpg,IMG-20220530-WA0095.jpg,,,,0.6449180841445923,No match found with sufficient confidence (score: 0.6449),,0,0,s121202054,False
+impostor,test_data\impostors\IMG-20220530-WA0098.jpg,IMG-20220530-WA0098.jpg,,,,0.794624924659729,No match found with sufficient confidence (score: 0.7946),,0,0,s121202059,False
+impostor,test_data\impostors\IMG-20220530-WA0098.jpg,IMG-20220530-WA0098.jpg,,,,0.794624924659729,No match found with sufficient confidence (score: 0.7946),,0,0,s121202033,False
+impostor,test_data\impostors\IMG-20220530-WA0098.jpg,IMG-20220530-WA0098.jpg,,,,0.794624924659729,No match found with sufficient confidence (score: 0.7946),,0,0,s122202058,False
+impostor,test_data\impostors\IMG-20220530-WA0098.jpg,IMG-20220530-WA0098.jpg,,,,0.794624924659729,No match found with sufficient confidence (score: 0.7946),,0,0,s121202054,False
+impostor,test_data\impostors\IMG-20250709-WA0154.jpg,IMG-20250709-WA0154.jpg,,,,0.7110233306884766,No match found with sufficient confidence (score: 0.7110),,0,0,s121202059,False
+impostor,test_data\impostors\IMG-20250709-WA0154.jpg,IMG-20250709-WA0154.jpg,,,,0.7110233306884766,No match found with sufficient confidence (score: 0.7110),,0,0,s121202033,False
+impostor,test_data\impostors\IMG-20250709-WA0154.jpg,IMG-20250709-WA0154.jpg,,,,0.7110233306884766,No match found with sufficient confidence (score: 0.7110),,0,0,s122202058,False
+impostor,test_data\impostors\IMG-20250709-WA0154.jpg,IMG-20250709-WA0154.jpg,,,,0.7110233306884766,No match found with sufficient confidence (score: 0.7110),,0,0,s121202054,False
+impostor,test_data\impostors\IMG-20250709-WA0179.jpg,IMG-20250709-WA0179.jpg,,,,0.6528006196022034,No match found with sufficient confidence (score: 0.6528),,0,0,s121202059,False
+impostor,test_data\impostors\IMG-20250709-WA0179.jpg,IMG-20250709-WA0179.jpg,,,,0.6528006196022034,No match found with sufficient confidence (score: 0.6528),,0,0,s121202033,False
+impostor,test_data\impostors\IMG-20250709-WA0179.jpg,IMG-20250709-WA0179.jpg,,,,0.6528006196022034,No match found with sufficient confidence (score: 0.6528),,0,0,s122202058,False
+impostor,test_data\impostors\IMG-20250709-WA0179.jpg,IMG-20250709-WA0179.jpg,,,,0.6528006196022034,No match found with sufficient confidence (score: 0.6528),,0,0,s121202054,False
+impostor,test_data\impostors\IMG_1402_Original.JPG,IMG_1402_Original.JPG,,,,0.6363009810447693,No match found with sufficient confidence (score: 0.6363),,0,0,s121202059,False
+impostor,test_data\impostors\IMG_1402_Original.JPG,IMG_1402_Original.JPG,,,,0.6363009810447693,No match found with sufficient confidence (score: 0.6363),,0,0,s121202033,False
+impostor,test_data\impostors\IMG_1402_Original.JPG,IMG_1402_Original.JPG,,,,0.6363009810447693,No match found with sufficient confidence (score: 0.6363),,0,0,s122202058,False
+impostor,test_data\impostors\IMG_1402_Original.JPG,IMG_1402_Original.JPG,,,,0.6363009810447693,No match found with sufficient confidence (score: 0.6363),,0,0,s121202054,False
+impostor,test_data\impostors\kinglion.jpg,kinglion.jpg,,,,0.7028947472572327,No match found with sufficient confidence (score: 0.7029),,0,0,s121202059,False
+impostor,test_data\impostors\kinglion.jpg,kinglion.jpg,,,,0.7028947472572327,No match found with sufficient confidence (score: 0.7029),,0,0,s121202033,False
+impostor,test_data\impostors\kinglion.jpg,kinglion.jpg,,,,0.7028947472572327,No match found with sufficient confidence (score: 0.7029),,0,0,s122202058,False
+impostor,test_data\impostors\kinglion.jpg,kinglion.jpg,,,,0.7028947472572327,No match found with sufficient confidence (score: 0.7029),,0,0,s121202054,False
+impostor,test_data\impostors\kinglion2.jpg,kinglion2.jpg,,,,0.8441790342330933,No match found with sufficient confidence (score: 0.8442),,0,0,s121202059,False
+impostor,test_data\impostors\kinglion2.jpg,kinglion2.jpg,,,,0.8441790342330933,No match found with sufficient confidence (score: 0.8442),,0,0,s121202033,False
+impostor,test_data\impostors\kinglion2.jpg,kinglion2.jpg,,,,0.8441790342330933,No match found with sufficient confidence (score: 0.8442),,0,0,s122202058,False
+impostor,test_data\impostors\kinglion2.jpg,kinglion2.jpg,,,,0.8441790342330933,No match found with sufficient confidence (score: 0.8442),,0,0,s121202054,False

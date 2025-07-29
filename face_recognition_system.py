@@ -12,12 +12,15 @@ import uuid
 from database_manager import DatabaseManager
 from liveness_detection import LivenessDetector
 from face_recognition_module import FaceRecognizer
+from alert_manager import ProctorAlerter
 
 class ExamProctorSystem:
     def __init__(self):
         self.db_manager = DatabaseManager()
         self.liveness_detector = LivenessDetector()
-        self.face_recognizer = FaceRecognizer()
+        # Explicitly initialize with the correct model to ensure 128-dim embeddings
+        self.face_recognizer = FaceRecognizer(model_name="Facenet")
+        self.alerter = ProctorAlerter()
         
         # Monitoring parameters
         self.monitoring_interval = 30  # seconds between checks
@@ -43,15 +46,22 @@ class ExamProctorSystem:
         print(f"Liveness result: {is_live}, score: {liveness_score}, message: {liveness_message}")
         
         if not is_live:
-            # Log failed liveness check
-            if self.current_student_id:
-                self.db_manager.log_authentication(
-                    self.current_student_id, 
-                    "FAILED_LIVENESS", 
-                    liveness_score, 
-                    0.0, 
-                    self.current_session_id
-                )
+            # Log failed liveness check and send alert
+            log_student_id = self.current_student_id if self.current_student_id else "UNKNOWN"
+            self.db_manager.log_authentication(
+                log_student_id, 
+                "FAILED_LIVENESS", 
+                liveness_score, 
+                0.0, 
+                self.current_session_id
+            )
+            self.alerter.log_alert(
+                'LIVENESS_FAILURE',
+                log_student_id,
+                self.current_session_id,
+                liveness_score,
+                liveness_message
+            )
             return False, None, liveness_score, 0.0, liveness_message
         
         # Step 2: Face Recognition
@@ -79,17 +89,25 @@ class ExamProctorSystem:
             
             return True, (student_id, name), liveness_score, confidence_score, "Authentication successful"
         else:
-            # Log failed recognition
-            if self.current_student_id:
-                self.db_manager.log_authentication(
-                    self.current_student_id, 
-                    "FAILED_RECOGNITION", 
-                    liveness_score, 
-                    confidence_score, 
-                    self.current_session_id
-                )
+            # Log failed recognition and send alert
+            log_student_id = self.current_student_id if self.current_student_id else "UNKNOWN"
             
-            return False, None, liveness_score, confidence_score, "Face not recognized"
+            self.db_manager.log_authentication(
+                log_student_id,
+                "FAILED_RECOGNITION",
+                liveness_score,
+                confidence_score,
+                self.current_session_id
+            )
+            self.alerter.log_alert(
+                'RECOGNITION_FAILURE',
+                log_student_id,
+                self.current_session_id,
+                confidence_score,
+                recognition_message
+            )
+            
+            return False, None, liveness_score, confidence_score, recognition_message
     
     def continuous_monitoring(self, image):
         """Perform periodic re-authentication during exam"""
@@ -268,11 +286,3 @@ if __name__ == "__main__":
     
     # Start the main system loop
     system.main_loop()
-
-
-
-
-
-
-
-
