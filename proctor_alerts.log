@@ -24,3 +24,5 @@
 2025-07-26 16:04:37,539 - WARNING - Type: LIVENESS_FAILURE, StudentID: s121202059, SessionID: ec3e2018-f9b2-46b6-9d61-e32ee9f1ea02, Score: 0.0000, Details: Please blink naturally and ensure good lighting
 2025-07-26 16:05:07,536 - WARNING - Type: LIVENESS_FAILURE, StudentID: s121202059, SessionID: ec3e2018-f9b2-46b6-9d61-e32ee9f1ea02, Score: 0.0000, Details: Please blink naturally and ensure good lighting
 2025-07-28 23:14:25,203 - WARNING - Type: LIVENESS_FAILURE, StudentID: s121202059, SessionID: 6a71b315-b434-42ea-b014-94da918f6c94, Score: 0.0000, Details: Please blink naturally and ensure good lighting
+2025-07-31 11:51:20,131 - WARNING - Type: RECOGNITION_FAILURE, StudentID: UNKNOWN, SessionID: 0a86a7ff-32df-4274-9e36-5fbb68ad1254, Score: 0.0000, Details: No face detected
+2025-07-31 11:51:49,771 - WARNING - Type: RECOGNITION_FAILURE, StudentID: UNKNOWN, SessionID: 0a86a7ff-32df-4274-9e36-5fbb68ad1254, Score: 0.6422, Details: No match found with sufficient confidence (score: 0.6422)
